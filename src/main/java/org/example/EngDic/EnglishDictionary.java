@@ -1,5 +1,7 @@
 package org.example.EngDic;
 
+import org.example.HashTable.PrefectHashTable;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,10 +10,7 @@ import java.util.Hashtable;
 
 public class EnglishDictionary {
 
-    private String[] keys;
-    private int backendType;
-    private int capacity;
-    private  int size;
+    private PrefectHashTable hashTable;
 
 
 

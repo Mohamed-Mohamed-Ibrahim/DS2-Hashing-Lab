@@ -5,13 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-<<<<<<< HEAD
 class PerfectHashing<T> {
-    private static final int N = 100; //N is the size of the dictionary 
-=======
-public class PerfectHashing<T> {
     private static final int N = 100; // N is the size of the dictionary
->>>>>>> 02f3df00e902f535761ff5d67e58d9c668b3bb3c
     private static final Random random = new Random();
 
     private List<T>[] firstLevelTable;

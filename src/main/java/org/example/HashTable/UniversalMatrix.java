@@ -1,6 +1,5 @@
 package org.example.HashTable;
 
-import org.example.Main;
 
 import java.util.Random;
 
@@ -67,17 +66,14 @@ public class UniversalMatrix {
     }
 
     public static void main(String[] args) {
-        int tableSize = 16; // Example table size
+        int tableSize = 16;
         UniversalMatrix universalMatrix = new UniversalMatrix(tableSize);
 
-        // Generate a random key (for testing purposes)
         Random rand = new Random();
         int randomKey = rand.nextInt();
 
-        // Compute the index for the random key using the UniversalMatrix object
         int index = universalMatrix.computeIndex(randomKey);
 
-        // Print the result
         System.out.println("Table size: " + tableSize);
         System.out.println("Random key: " + randomKey);
         System.out.println("Index: " + index);
