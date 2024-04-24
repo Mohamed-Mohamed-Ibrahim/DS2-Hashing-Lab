@@ -247,7 +247,7 @@ public class HashTable1<T> implements PrefectHashTable<T>{
     }
 
     public int getCapacity() {
-        return numberOfInsertions;
+        return numberOfInsertions - numberOfDeletions + 1;
     }
 
     public void printHashTable() {
