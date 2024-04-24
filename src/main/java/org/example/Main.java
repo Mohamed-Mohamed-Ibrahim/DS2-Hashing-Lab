@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.HashTable.UniversalMatrix;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,8 +31,6 @@ class PerfectHashing<T> {
     }
 
     private <T> int universalHash(T key, int tableSize) {
-        // Random coefficients a and b for universal hashing
-        // Random constant b in the range [0, tableSize-1] to cover all possible offset values
         if (tableSize != N)
             this.universalMatrix = new UniversalMatrix(tableSize);
 

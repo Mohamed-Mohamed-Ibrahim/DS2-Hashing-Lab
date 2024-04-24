@@ -1,5 +1,7 @@
 package org.example.HashTable;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,10 +135,44 @@ public class HashTable2<T> implements PrefectHashTable<T>{
     @Override
     public void batchInsert(String filePath) {
 
+        List<T> words = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                T word = (T) line.trim();
+                words.add(word);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (T word : words) {
+
+            insert(word);
+
+        }
+
     }
 
     @Override
     public void batchDelete(String filePath) {
+
+        List<T> words = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                T word = (T) line.trim();
+                words.add(word);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (T word : words) {
+            delete(word);
+        }
 
     }
 }
