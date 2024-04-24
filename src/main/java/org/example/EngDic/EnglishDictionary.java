@@ -29,13 +29,13 @@ public class EnglishDictionary<T> {
         return hashTable.search(key);
     }
 
-    public void createDictionaryFromFile(String filePath) {
+    public void batchInsert(String filePath) {
 
         hashTable.batchInsert(filePath);
 
     }
 
-    public void deleteWordsFromDictionary(String filePath) {
+    public void batchDelete(String filePath) {
 
         hashTable.batchDelete(filePath);
 

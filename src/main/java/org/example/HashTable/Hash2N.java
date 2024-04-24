@@ -80,7 +80,7 @@ public class Hash2N {
         }
         currentSize = 0;
         // update hash and table
-        this.universalMatrix.generate();
+//        this.universalMatrix.generate();
         this.table = new Integer[(int) Math.pow(maxSize, 2)];
 
         for (int i = 0; i < keys.size(); i++){
@@ -89,7 +89,7 @@ public class Hash2N {
                 table[hashValue] = keys.get(i);
                 currentSize++;
             }else {
-                this.universalMatrix.generate();
+//                this.universalMatrix.generate();
                 this.table = new Integer[(int) Math.pow(maxSize, 2)];
                 i = -1;
                 currentSize = 0;

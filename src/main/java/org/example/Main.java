@@ -15,6 +15,13 @@ class PerfectHashing<T> {
     private int numberOfInsertions;
     private int numberOfDeletions;
 
+    private int numberOfReHashing;
+
+    private int capacity;
+
+    private UniversalMatrix universalMatrix;
+
+
     public PerfectHashing() {
         this.firstLevelTable = new List[N];
         for (int i = 0; i < N; i++) {
@@ -28,10 +35,11 @@ class PerfectHashing<T> {
 
     private <T> int universalHash(T key, int tableSize) {
         // Random coefficients a and b for universal hashing
-        int hashCode = key.hashCode();
-        int a = random.nextInt(tableSize - 1) + 1; // Random coefficient a in the range [1, tableSize-1] to ensure that `a` mod `tableSize` is a non-zero value 
-        int b = random.nextInt(tableSize);         // Random constant b in the range [0, tableSize-1] to cover all possible offset values
-        return ((a * hashCode + b) % 101) % tableSize; 
+        // Random constant b in the range [0, tableSize-1] to cover all possible offset values
+        if( tableSize != N )
+            this.universalMatrix = new UniversalMatrix(tableSize);
+
+        return this.universalMatrix.computeIndex(key);
     }
 
     public boolean insert(T key) {
