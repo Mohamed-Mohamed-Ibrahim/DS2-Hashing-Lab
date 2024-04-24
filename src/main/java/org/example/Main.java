@@ -1,5 +1,6 @@
 package org.example;
 import com.sun.jdi.IntegerType;
+import org.example.HashTable.UniversalMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +106,10 @@ class PerfectHashing<T> {
 
 public class Main {
     public static void main(String[] args) {
-        Double ok = 123.2;
-        System.out.println(ok.hashCode());
+        String ok1 = new String("asdasd");
+        String ok2 = new String("asdasd");
+        UniversalMatrix universalMatrix = new UniversalMatrix(100);
+        System.out.println(universalMatrix.computeIndex(ok1));
+        System.out.println(universalMatrix.computeIndex(ok2));
     }
 }

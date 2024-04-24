@@ -1,5 +1,7 @@
 package org.example.EngDic;
 
+import org.example.HashTable.HashTable1;
+import org.example.HashTable.HashTable2;
 import org.example.HashTable.PrefectHashTable;
 
 import java.io.BufferedReader;
@@ -15,10 +17,10 @@ public class EnglishDictionary {
 
 
     public EnglishDictionary(int order) {
-        backendType = order;
-        size = 0;
-        capacity = 10;
-        keys = new String[capacity];
+        if ( order == 1 )
+            hashTable = new HashTable1<>();
+        else if ( order == 2 )
+            hashTable = new HashTable2<>();
     }
 
     private int hash(String key) {
