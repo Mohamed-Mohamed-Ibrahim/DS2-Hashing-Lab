@@ -127,8 +127,10 @@ public class HashTable1<T> implements PrefectHashTable<T>{
 
         int hash = universalMatrix.computeIndex(key);
 
-        if( key.equals(hashTable[hash]) )
+        if( key.equals(hashTable[hash]) ){
+            System.out.println("Duplicate is Founded ... Please Report");
             return false;
+        }
 
         int newSize = (int) (Math.sqrt(N)+1);
 
@@ -144,6 +146,7 @@ public class HashTable1<T> implements PrefectHashTable<T>{
         }
         numberOfInsertions++;
         hashTable[hash] = key;
+        System.out.println("Item is Inserted");
 
         return true;
     }
@@ -156,8 +159,10 @@ public class HashTable1<T> implements PrefectHashTable<T>{
         if( hashTable[hash] != null ) {
             hashTable[hash] = null;
             numberOfDeletions++;
+            System.out.println("Item is deleted");
+            return key;
         }
-
+        System.out.println("Item is not Found ... Therefore not deleted");
         return key;
     }
 
@@ -167,9 +172,12 @@ public class HashTable1<T> implements PrefectHashTable<T>{
 
         int hash = universalMatrix.computeIndex(key);
 
-        if( hashTable[hash] != null )
+        if( hashTable[hash] != null ){
+            System.out.println("Item is Found");
             return true;
+        }
 
+        System.out.println("Item is not Found");
         return false;
     }
 

@@ -4,16 +4,9 @@ import org.example.HashTable.HashTable1;
 import org.example.HashTable.HashTable2;
 import org.example.HashTable.PrefectHashTable;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
+public class EnglishDictionary<T> {
 
-public class EnglishDictionary {
-
-    private PrefectHashTable hashTable;
-
+    private PrefectHashTable<T> hashTable;
 
 
     public EnglishDictionary(int order) {
@@ -23,70 +16,63 @@ public class EnglishDictionary {
             hashTable = new HashTable2<>();
     }
 
-    private int hash(String key) {
-        return key.length() % keys.length;
+
+    public Boolean insert(T key) {
+        return hashTable.insert(key);
     }
 
-    public void insert(String key) {
-        if (size == capacity) {
-            System.out.println("Dictionary is full. Cannot insert.");
-            return;
-        }
-        int index = hash(key);
-        while (keys[index] != null) {
-            index = (index + 1) % capacity; // Linear probing
-        }
-        keys[index] = key;
-        size++;
+    public T delete(T key) {
+        return hashTable.delete(key);
     }
 
-    public void delete(String key) {
-        int index = search(key);
-        if (index != -1) {
-            keys[index] = null;
-            size--;
-        } else {
-            System.out.println("Key not found. Cannot delete.");
-        }
-    }
-
-    public int search(String key) {
-        int index = hash(key);
-        while (keys[index] != null) {
-            if (keys[index].equals(key)) {
-                return index;
-            }
-            index = (index + 1) % capacity;
-        }
-        return -1;
+    public Boolean search(T key) {
+        return hashTable.search(key);
     }
 
     public void createDictionaryFromFile(String filePath) {
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-
-                String word = line.trim();
-
-                insert(word);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        hashTable.batchInsert(filePath);
 
     }
 
     public void deleteWordsFromDictionary(String filePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String word = line.trim();
-                delete(word);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        hashTable.batchDelete(filePath);
+
     }
+
+        public static void main(String[] args) {
+            // Create an EnglishDictionary with HashTable1
+            EnglishDictionary<String> dictionary1 = new EnglishDictionary<>(1);
+
+            // Insert some words into the dictionary
+            dictionary1.insert("apple");
+            dictionary1.insert("banana");
+            dictionary1.insert("cherry");
+            dictionary1.insert("date");
+
+            // Search for a word in the dictionary
+            System.out.println("Is 'banana' in the dictionary? " + dictionary1.search("banana"));
+
+            // Delete a word from the dictionary
+            dictionary1.delete("banana");
+
+            // Search for the deleted word again
+            System.out.println("Is 'banana' in the dictionary after deletion? " + dictionary1.search("banana"));
+
+            // Create another EnglishDictionary with HashTable2
+            EnglishDictionary<String> dictionary2 = new EnglishDictionary<>(1);
+
+            // Create dictionary from file
+//            dictionary2.createDictionaryFromFile("dictionary_words.txt");
+//
+//            // Delete words from dictionary using file
+//            dictionary2.deleteWordsFromDictionary("words_to_delete.txt");
+
+            // Test searching for words in the dictionary
+            System.out.println("Is 'apple' in the dictionary? " + dictionary2.search("apple"));
+            System.out.println("Is 'banana' in the dictionary? " + dictionary2.search("banana"));
+        }
+
 
 }
