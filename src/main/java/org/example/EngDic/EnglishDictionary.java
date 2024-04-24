@@ -10,9 +10,9 @@ public class EnglishDictionary<T> {
 
 
     public EnglishDictionary(int order) {
-        if ( order == 1 )
+        if ( order == 2 )
             hashTable = new HashTable1<>();
-        else if ( order == 2 )
+        else if ( order == 1 )
             hashTable = new HashTable2<>();
     }
 
