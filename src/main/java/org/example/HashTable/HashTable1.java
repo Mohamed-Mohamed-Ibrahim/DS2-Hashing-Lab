@@ -172,7 +172,7 @@ public class HashTable1<T> implements PrefectHashTable<T>{
 
 
     @Override
-    public Boolean search(Object key) {
+    public Boolean search(T key) {
 
         int hash = universalMatrix.computeIndex(key);
 
