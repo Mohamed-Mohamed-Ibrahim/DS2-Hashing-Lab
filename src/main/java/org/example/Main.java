@@ -1,9 +1,11 @@
 package org.example;
+import com.sun.jdi.IntegerType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class PerfectHashing<T> {
+class PerfectHashing<T> {
     private static final int N = 100; //N is the size of the dictionary 
     private static final Random random = new Random();
 
@@ -80,6 +82,7 @@ public class PerfectHashing<T> {
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Double ok = 123.2;
+        System.out.println(ok.hashCode());
     }
 }
