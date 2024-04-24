@@ -1,6 +1,4 @@
 package org.example;
-import com.sun.jdi.IntegerType;
-import org.example.HashTable.UniversalMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +12,8 @@ class PerfectHashing<T> {
     private List<T>[] secondLevelTables;
     private int numberOfInsertions;
     private int numberOfDeletions;
-
     private int numberOfReHashing;
-
-    private int capacity;
-
     private UniversalMatrix universalMatrix;
-
 
     public PerfectHashing() {
         this.firstLevelTable = new List[N];
@@ -31,12 +24,14 @@ class PerfectHashing<T> {
         this.secondLevelTables = new List[N];
         this.numberOfInsertions = 0;
         this.numberOfDeletions = 0;
+        this.numberOfReHashing = 0;
+        this.universalMatrix = new UniversalMatrix(N);
     }
 
     private <T> int universalHash(T key, int tableSize) {
         // Random coefficients a and b for universal hashing
         // Random constant b in the range [0, tableSize-1] to cover all possible offset values
-        if( tableSize != N )
+        if (tableSize != N)
             this.universalMatrix = new UniversalMatrix(tableSize);
 
         return this.universalMatrix.computeIndex(key);
@@ -51,12 +46,35 @@ class PerfectHashing<T> {
                 return true;
             } else {
                 int hash2 = universalHash(key, this.secondLevelTables[hash1].size());
-                this.secondLevelTables[hash1].set(hash2, key);
-                numberOfInsertions++;
-                return true;
+                if (this.secondLevelTables[hash1].get(hash2) == null) {
+                    this.secondLevelTables[hash1].set(hash2, key);
+                    numberOfInsertions++;
+                    return true;
+                } else {
+                    // Collision detected in secondary level, rehash
+                    rehashSecondary(hash1);
+                    return insert(key); // Re-insert after rehashing
+                }
             }
         }
         return false;
+    }
+
+    private void rehashSecondary(int hash1) {
+        List<T> bin = this.firstLevelTable[hash1];
+        int m = bin.size() * bin.size();
+        this.secondLevelTables[hash1] = new ArrayList<>(m);
+        for (int j = 0; j < m; j++) {
+            this.secondLevelTables[hash1].add(null);
+        }
+
+        for (T key : bin) {
+            int hash2 = universalHash(key, m);
+            while (this.secondLevelTables[hash1].get(hash2) != null) {
+                hash2 = (hash2 + 1) % m; // Linear probing
+            }
+            this.secondLevelTables[hash1].set(hash2, key);
+        }
     }
 
     public boolean delete(T key) {
@@ -111,8 +129,7 @@ class PerfectHashing<T> {
     }
 }
 
-
-public class Main {
+class Main {
     public static void main(String[] args) {
         String ok1 = new String("asdasd");
         String ok2 = new String("asdasd");
