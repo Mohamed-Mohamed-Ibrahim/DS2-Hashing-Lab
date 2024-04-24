@@ -77,14 +77,14 @@ public class HashTable1<T> implements PrefectHashTable<T>{
         }
 
         Arrays.fill(keys, null);
-
+        numberOfReHashing++;
+        System.out.println("No of rehashing " + numberOfReHashing);
 
     }
 
     private void rehash(int newSize) {
 //        printHashTable();
 //        System.out.println();
-        numberOfReHashing++;
 
         this.universalMatrix = new UniversalMatrix(newSize);
 
@@ -117,6 +117,8 @@ public class HashTable1<T> implements PrefectHashTable<T>{
         }
 
         Arrays.fill(keys, null);
+        numberOfReHashing++;
+        System.out.println("No of rehashing " + numberOfReHashing);
 
 
     }
@@ -147,6 +149,7 @@ public class HashTable1<T> implements PrefectHashTable<T>{
         numberOfInsertions++;
         hashTable[hash] = key;
         System.out.println("Item is Inserted");
+        System.out.println("No of Insertions " + numberOfInsertions);
 
         return true;
     }
@@ -160,6 +163,7 @@ public class HashTable1<T> implements PrefectHashTable<T>{
             hashTable[hash] = null;
             numberOfDeletions++;
             System.out.println("Item is deleted");
+            System.out.println("No of deletions " + numberOfDeletions);
             return key;
         }
         System.out.println("Item is not Found ... Therefore not deleted");
