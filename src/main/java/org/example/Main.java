@@ -131,10 +131,30 @@ class PerfectHashing<T> {
 
 class Main {
     public static void main(String[] args) {
-        String ok1 = new String("asdasd");
-        String ok2 = new String("asdasd");
-        UniversalMatrix universalMatrix = new UniversalMatrix(100);
-        System.out.println(universalMatrix.computeIndex(ok1));
-        System.out.println(universalMatrix.computeIndex(ok2));
+        PerfectHashing<Integer> perfectHashing = new PerfectHashing<>();
+
+        // Insert some elements
+        perfectHashing.insert(10);
+        perfectHashing.insert(20);
+        perfectHashing.insert(30);
+        perfectHashing.insert(40);
+        perfectHashing.insert(50);
+
+        // Build second level tables
+        perfectHashing.buildSecondLevelTables();
+
+        // Test searching for elements
+        System.out.println("Search for 10: " + perfectHashing.search(10));
+        System.out.println("Search for 20: " + perfectHashing.search(20));
+        System.out.println("Search for 30: " + perfectHashing.search(30));
+        System.out.println("Search for 40: " + perfectHashing.search(40));
+        System.out.println("Search for 50: " + perfectHashing.search(50));
+        System.out.println("Search for 60: " + perfectHashing.search(60)); // Not inserted
+
+        // Test deleting elements
+        System.out.println("Deleting 20: " + perfectHashing.delete(20));
+        System.out.println("Deleting 40: " + perfectHashing.delete(40));
+        System.out.println("Search for 20 after deletion: " + perfectHashing.search(20));
+        System.out.println("Search for 40 after deletion: " + perfectHashing.search(40)); // Not inserted
     }
 }

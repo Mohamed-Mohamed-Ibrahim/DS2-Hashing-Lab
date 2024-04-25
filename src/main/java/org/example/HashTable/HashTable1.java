@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class HashTable1<T> implements PrefectHashTable<T>{
 
-    private int N;
+    private int N = 10;
     private final Random random = new Random();
 
     private T[] hashTable;
@@ -52,11 +52,15 @@ public class HashTable1<T> implements PrefectHashTable<T>{
     private void rehash() {
 //        printHashTable();
 //        System.out.println();
-        numberOfReHashing++;
 
-        this.universalMatrix = new UniversalMatrix(N);
+        if( universalMatrix.M != N )
+            universalMatrix = new UniversalMatrix(N);
+        else
+            universalMatrix.generate();
 
-        this.hashTable = (T[]) new Object[N];
+        if( N != this.hashTable.length )
+            this.hashTable = (T[]) new Object[N];
+
 
         Arrays.fill(hashTable, null);
 
@@ -86,38 +90,68 @@ public class HashTable1<T> implements PrefectHashTable<T>{
 //        printHashTable();
 //        System.out.println();
 
-        this.universalMatrix = new UniversalMatrix(newSize);
+        if( universalMatrix.M != N )
+            universalMatrix = new UniversalMatrix(N);
+        else
+            universalMatrix.generate();
 
-        keys = (T[]) new Object[getCapacity()];
+        if( keys == null || keys.length != getCapacity() )
+            keys = (T[]) new Object[getCapacity()];
         int i =0;
 
         for ( T key : hashTable ) {
             if( key != null )
                 keys[i++] = key;
         }
-
-        this.hashTable = (T[]) new Object[newSize];
+        if( N != this.hashTable.length )
+            this.hashTable = (T[]) new Object[N];
 
         Arrays.fill(hashTable, null);
 
         int hash;
 
-        for ( T key : keys ) {
+//        for ( T key : keys ) {
+//
+//            if( key == null )
+//                continue;
+//
+//            hash = universalMatrix.computeIndex(key);
+//            if( hashTable[hash] != null ) {
+//                rehash();
+////                System.out.println("____");
+//                break;
+//            }
+//            hashTable[hash] = key;
+//        }
 
-            if( key == null )
+        for ( int k=0; k<keys.length; k++) {
+//        for ( T key : keys ) {
+
+            if (keys[k] == null)
                 continue;
 
-            hash = universalMatrix.computeIndex(key);
-            if( hashTable[hash] != null ) {
-                rehash();
+            hash = universalMatrix.computeIndex(keys[k]);
+            while (hashTable[hash] != null) {
+                numberOfReHashing++;
+//                rehash();
 //                System.out.println("____");
-                break;
+//                break;
+                Arrays.fill(hashTable, null);
+                if( universalMatrix.M != N )
+                    universalMatrix = new UniversalMatrix(N);
+                else
+                    universalMatrix.generate();
+
+                k = 0;
+                hash = universalMatrix.computeIndex(keys[k]);
+//                System.out.println(hashTable.get(changeSizeI)[0]);
+
             }
-            hashTable[hash] = key;
+
+            hashTable[hash] = keys[k];
         }
 
         Arrays.fill(keys, null);
-        numberOfReHashing++;
         System.out.println("No of rehashing " + numberOfReHashing);
 
 
@@ -129,26 +163,28 @@ public class HashTable1<T> implements PrefectHashTable<T>{
 
         int hash = universalMatrix.computeIndex(key);
 
-        if( key.equals(hashTable[hash]) ){
+        if( hashTable[hash] != null && key.hashCode() == hashTable[hash].hashCode() ){
             System.out.println("Duplicate is Founded ... Please Report");
             return false;
         }
 
         int newSize = (int) (Math.sqrt(N)+1);
 
+//        newSize *= newSize;
+
         while (hashTable[hash] != null) {
 
             if( newSize*newSize != N )
-                N = newSize*newSize;
+                N = 2*newSize*newSize;
 
             rehash(N);
 
             hash = universalMatrix.computeIndex(key);
 
         }
-        numberOfInsertions++;
         hashTable[hash] = key;
         System.out.println("Item is Inserted");
+        numberOfInsertions++;
         System.out.println("No of Insertions " + numberOfInsertions);
 
         return true;
@@ -159,7 +195,7 @@ public class HashTable1<T> implements PrefectHashTable<T>{
 
         int hash = universalMatrix.computeIndex(key);
 
-        if( hashTable[hash] != null ) {
+        if( key.equals(hashTable[hash]) ) {
             hashTable[hash] = null;
             numberOfDeletions++;
             System.out.println("Item is deleted");
@@ -176,7 +212,7 @@ public class HashTable1<T> implements PrefectHashTable<T>{
 
         int hash = universalMatrix.computeIndex(key);
 
-        if( hashTable[hash] != null ){
+        if( key.equals(hashTable[hash]) ){
             System.out.println("Item is Found");
             return true;
         }
@@ -251,11 +287,22 @@ public class HashTable1<T> implements PrefectHashTable<T>{
     }
 
     public void printHashTable() {
+        int i=0;
         for ( T key : hashTable ) {
             if( key != null )
                 System.out.print(key + " | ");
+
         }
         System.out.println();
+    }
+
+    public static String generateRandomString(Random random, int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder stringBuilder = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            stringBuilder.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return stringBuilder.toString();
     }
 
     public static void main(String[] args) {
@@ -284,23 +331,28 @@ public class HashTable1<T> implements PrefectHashTable<T>{
 
         // Test batch insertions and deletions
 //        System.out.println("Batch insertions and deletions...");
-//        hashtable.printHashTable();
-//        hashtable.batchInsert("C:/Users/Al-Gawad/Desktop/demo_ass2_test.txt");
-//        hashtable.printHashTable();
-//        hashtable.batchDelete("C:/Users/Al-Gawad/Desktop/demo_ass2_test - Copy.txt");
-//        hashtable.printHashTable();
+////        hashtable.printHashTable();
+//        hashtable.batchInsert("C:\\Users\\Al-Gawad\\Desktop\\testcase O(N^2).txt");
+////        hashtable.printHashTable();
+////        hashtable.batchDelete("C:/Users/Al-Gawad/Desktop/demo_ass2_test - Copy.txt");
+////        hashtable.printHashTable();
 //        System.out.println("Number of rehashing: " + hashtable.getNumberOfReHashing());
 
+        Random random = new Random();
+
         // Insert a large number of elements to trigger rehashing
-//        System.out.println("Inserting elements to trigger rehashing...");
-//        for (int i = 0; i < 100; i++) {
-//            hashtable.insert("element" + i);
-//        }
-//
+        System.out.println("Inserting elements to trigger rehashing...");
+        for (int i = 0; i < 2000; i++) {
+            String randomElement = generateRandomString(random, 10); // Change 10 to desired length
+            hashtable.insert(randomElement);
+        }
+//        hashtable.printHashTable();
 //        // Print the size of the hashtable before and after rehashing
 //        System.out.println("Size of the hashtable before rehashing: " + hashtable.getNumberOfInsertions());
 //        System.out.println("Number of rehashing operations: " + hashtable.getNumberOfReHashing());
 //        System.out.println("Size of the hashtable after rehashing: " + hashtable.getNumberOfInsertions());
+////        hashtable.printHashTable();
+        System.out.println(hashtable.getCapacity());;
 
     }
 }

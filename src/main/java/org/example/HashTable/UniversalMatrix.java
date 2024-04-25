@@ -18,7 +18,7 @@ public class UniversalMatrix {
         generate();
     }
 
-    private void generate() {
+    public void generate() {
         Random rand = new Random();
 
         for (int i = 0; i < b; i++) {
